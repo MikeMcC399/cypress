@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "conventional-commits-parser": "3.2.4"
+    "conventional-commits-parser": "5.0.0"
   }
 }
