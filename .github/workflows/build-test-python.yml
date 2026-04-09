@@ -1,0 +1,36 @@
+name: Build test python
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+          - windows-2025
+        python:
+          - 3.13
+          - 3.14
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: 'yarn'
+          cache-dependency-path: yarn.lock
+      - name: Set up python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Yarn
+        run: |
+          yarn config set network-timeout 600000
+          yarn
+      - run: yarn list --pattern node-gyp
+      - run: python3 --version
